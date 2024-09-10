@@ -7,11 +7,13 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
+[BurstCompile]
 public partial struct EnemySystem : ISystem
 {
    private EntityManager entityManager;
    private EntityCommandBuffer ecb;
    
+   [BurstCompile]
    public void OnUpdate(ref SystemState state)
    {
       var ecbSystem = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
@@ -36,7 +38,6 @@ public partial struct EnemySystem : ISystem
             }
             if (enemyTransform.Position.y < -5)
             {
-               Debug.Log(enemy + " is now at -4");
                ecb.DestroyEntity(enemy);
                continue;
             }

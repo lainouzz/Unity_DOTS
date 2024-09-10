@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Transforms;
 
+[UpdateAfter(typeof(InputSystem))]
 public partial struct PlayerSystem : ISystem
 {
     private Entity playerEntity;
@@ -14,11 +16,13 @@ public partial struct PlayerSystem : ISystem
     private PlayerComponent playerComponent;
     private InputComponent inputComponent;
 
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         
     }
     
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         entityManager = state.EntityManager;

@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Transforms;
+
+[UpdateBefore(typeof(EnemySystem))]
+[BurstCompile]
 public partial struct BulletSystem : ISystem
 {
     private void OnUpdate(ref SystemState state)
@@ -22,7 +26,7 @@ public partial struct BulletSystem : ISystem
                 entityManager.SetComponentData(entity, bulletTransform);
 
                 NativeArray<Entity> enemyEntities = entityManager.GetAllEntities(Allocator.Temp);
-                    
+                
                 foreach (Entity enemy in enemyEntities)
                 {
                     if (entityManager.HasComponent<EnemyComponent>(enemy))
