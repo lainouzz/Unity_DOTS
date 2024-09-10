@@ -13,7 +13,6 @@ public partial struct EnemySystem : ISystem
    private EntityManager entityManager;
    private EntityCommandBuffer ecb;
    
-   [BurstCompile]
    public void OnUpdate(ref SystemState state)
    {
       var ecbSystem = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();

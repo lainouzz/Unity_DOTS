@@ -7,13 +7,6 @@ using Random = UnityEngine.Random;
 
 partial struct SpawnerSystem : ISystem
 {
-    [BurstCompile]
-    public void OnCreate(ref SystemState state)
-    {
-        
-    }
-
-    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         foreach (RefRW<Spawner> spawner in SystemAPI.Query<RefRW<Spawner>>())
@@ -31,11 +24,5 @@ partial struct SpawnerSystem : ISystem
                 spawner.ValueRW.nextSpawnTime = (float)SystemAPI.Time.ElapsedTime + spawner.ValueRO.spawnRate;
             }
         }
-    }
-
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
-    {
-        
     }
 }
