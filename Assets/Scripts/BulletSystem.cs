@@ -15,7 +15,7 @@ public partial struct BulletSystem : ISystem
     {
         EntityManager entityManager = state.EntityManager;
         NativeArray<Entity> allEntities = entityManager.GetAllEntities();
-
+        
         foreach (Entity entity in allEntities)
         {
             if (entityManager.HasComponent<BulletComponent>(entity))
@@ -24,9 +24,8 @@ public partial struct BulletSystem : ISystem
                 BulletComponent bulletComponent = entityManager.GetComponentData<BulletComponent>(entity);
                 bulletTransform.Position += bulletComponent.speed * SystemAPI.Time.DeltaTime * bulletTransform.Up();
                 entityManager.SetComponentData(entity, bulletTransform);
-
-                NativeArray<Entity> enemyEntities = entityManager.GetAllEntities(Allocator.Temp);
                 
+                NativeArray<Entity> enemyEntities = entityManager.GetAllEntities(Allocator.Temp);
                 foreach (Entity enemy in enemyEntities)
                 {
                     if (entityManager.HasComponent<EnemyComponent>(enemy))
@@ -34,6 +33,11 @@ public partial struct BulletSystem : ISystem
                         LocalTransform enemyTransform = entityManager.GetComponentData<LocalTransform>(enemy);
                         EnemyComponent enemyComponent = entityManager.GetComponentData<EnemyComponent>(enemy);
                         float3 enemyPos = enemyTransform.Position;
+
+                        if (bulletTransform.Position.y > 6f)
+                        {
+                            entityManager.DestroyEntity(entity);
+                        }
                         
                         if (math.distance(bulletTransform.Position, enemyPos) < bulletComponent.collisionRadius)
                         {
@@ -43,6 +47,7 @@ public partial struct BulletSystem : ISystem
                             entityManager.SetComponentData(enemy, enemyComponent);
                             break;
                         }
+                        
                     }
                 }
                 enemyEntities.Dispose();

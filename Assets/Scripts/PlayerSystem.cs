@@ -15,6 +15,9 @@ public partial struct PlayerSystem : ISystem
     private EntityManager entityManager;
     private PlayerComponent playerComponent;
     private InputComponent inputComponent;
+    private LocalTransform playerTransform;
+    
+    private EntityCommandBuffer ecb;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state)
@@ -25,6 +28,9 @@ public partial struct PlayerSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        var ecbSystem = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+        ecb = ecbSystem.CreateCommandBuffer(state.WorldUnmanaged);
+        
         entityManager = state.EntityManager;
         playerEntity = SystemAPI.GetSingletonEntity<PlayerComponent>();
         inputEntity = SystemAPI.GetSingletonEntity<InputComponent>();
@@ -38,7 +44,7 @@ public partial struct PlayerSystem : ISystem
     
     private void Move(ref SystemState state)
     {
-        LocalTransform playerTransform = entityManager.GetComponentData<LocalTransform>(playerEntity);
+        playerTransform = entityManager.GetComponentData<LocalTransform>(playerEntity);
         playerTransform.Position +=
             new float3(inputComponent.movement * playerComponent.moveSpeed * SystemAPI.Time.DeltaTime, 0);
         
@@ -58,12 +64,14 @@ public partial struct PlayerSystem : ISystem
                 speed = 10,
                 collisionRadius = 0.5f
             });
+            
 
             LocalTransform bulletTransform = entityManager.GetComponentData<LocalTransform>(bulletEntity);
             bulletTransform.Rotation = entityManager.GetComponentData<LocalTransform>(playerEntity).Rotation;
             LocalTransform playerTransform = entityManager.GetComponentData<LocalTransform>(playerEntity);
             bulletTransform.Position =
                 playerTransform.Position + playerTransform.Right() * -0.08f + playerTransform.Up() * 0.5f;
+            
             ecb.SetComponent(bulletEntity, bulletTransform);
             ecb.Playback(entityManager);
             

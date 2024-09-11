@@ -51,7 +51,5 @@ public partial struct EnemySystem : ISystem
       enemyTransform.Position += new float3(0, -1, 0) * enemyComponent.speed * SystemAPI.Time.DeltaTime;
       
       state.EntityManager.SetComponentData(enemy, enemyTransform);
-      
    }
-
 }
