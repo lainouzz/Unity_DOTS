@@ -1,15 +1,27 @@
 # Unity_DOTS
 
 ## Project explanation
- In this project we create a unity 2D project using Unity DOTS(Data-Oriented Technology Stack), the goal was to create a simple space shooter game, where we need some type of wave of enemies, player movement and shooting to kill the enemies.
+ In this project we created a Unity 2D project using Unity DOTS(Data-Oriented Technology Stack), the goal was to create a simple space shooter game, where we needed some type of wave of enemies, player movement and shooting to kill the enemies.
 
  ## Setup
- When setting up a DOTS project we first need to install the Entities plugin that unity provieds, installing "Entity graphics" will also install some other useful tools needed for entity, note that installing "Entity" plugin is fine too. After installing this, it's good to install unitys new input system(fine to keep old system), once this is installed we create a gameinput, where we handle Move(WASD, with value Vector2) and Shoot(SPACE with value any).
+ When setting up a DOTS project we first need to install the Entities plugin that Unity provides, installing "Entity graphics" will also install some other useful tools needed for the entity, note that installing "Entity" plugin is fine too. After installing this, it's good to install Unity's new input system(fine to keep the old system), once this is installed we create a game input, where we handle Move(WASD, with value Vector2) and Shoot(SPACE with value any).
 
  ## Movement
- To create a moving player we first create a player prefab, we then create 3 scripts for the player: "PlayerAuthioring", "PlayerComponent", "PlayerSystem", in this three scripts we delcare our variables like speed, position etc, we bake the variables and we handle all the movement in the "PlayerSystem".
+ To create a moving player we first create a player prefab, we then create 3 scripts for the player: "PlayerAuthioring", "PlayerComponent", and "PlayerSystem", in these three scripts we declare our variables like speed, position, etc, we bake the variables and we handle all the movement in the "PlayerSystem".
 
- Now we need to create 2 more script for input: "InputSystem" and "InputComponent", same as before we create our variables for movement and a bool to check if we are shooting or not.
+ Now we need to create 2 more scripts for input: "InputSystem" and "InputComponent", same as before we create our variables for movement and a bool to check if we are shooting or not.
 
  ## Shooting 
-For shooting we need to create a BulletSystem and BulletComponent, in my bulletComponent I collision radius for checking if bullet is hitting the enemy later on.To explain it real short, all i do is loop though all enemies then i check the distance betwwen bullet and enemy, then i deal damage(-50 in this case) then i destroy the enemy. we use " entityManager.GetAllEntities()" to get all enemy entities.
+For shooting we need to create a BulletSystem and BulletComponent, in my bulletComponent I collision radius for checking if the bullet is hitting the enemy later on. To explain it really briefly, all I do is loop through all enemies then I check the distance between bullet and enemy, then I deal damage(-50 in this case), and then I destroy the enemy. we use " entityManager.GetAllEntities()" to get all enemy entities.
+
+## Optimization
+Unity's DOTS and ECS are designed to minimize the heap allocation by using struct, we use struct for all the Components and systems scripts, this reduces the memory fragmentation and avoids garbage collection issues.
+You might notice how we also use "Allocator.Temp" for ToEntityArray/NativeArray, this is if the memory to only be allocated temporarily and is quickly disposed of.
+
+We use [BurstCompiler] for most scripts, the burst compiler further optimizes the stack usage by reducing the number of function calls, this is also good for improving performance on both CPU and memory.
+For all our Authoring scripts we define our variables, like speed, health, etc, these are then later converted to ECS components at runtime via the "Bake"
+
+Stack allocations are used in the Transforms, like playerTransform, bulletTransform etc, this is ti ensure fast memory allocation and deallocation.
+Heap is used for Components, like PlayerComponment, BulletComponents etc, we do use structs as mentioned above to minimize the heap allocation.
+
+A lot of the scripts use pretty much the same "optimizations" due to the small project there isn't much to optimize, but if we would instantiate thousands and thousands of entities then we would notice it much better, but now we just spawn a few enemies each second.
