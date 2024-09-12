@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 8261645937546065214, guid: 7f27f7ceb0c9975459dcc7b0bc767cb8, type: 3}
-  spawnRate: 1
+  spawnRate: 0.7
 --- !u!4 &124035067
 Transform:
   m_ObjectHideFlags: 0
@@ -278,7 +278,7 @@ PrefabInstance:
       objectReference: {fileID: 3446802601896292634, guid: 5fa3ae37b36a37e4bb08694b0d952fef, type: 3}
     - target: {fileID: 1700231005387025903, guid: b9b2513a5d8d5374d844ae6dc5295f4c, type: 3}
       propertyPath: shootCoolDown
-      value: 0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 9124818936658793838, guid: b9b2513a5d8d5374d844ae6dc5295f4c, type: 3}
       propertyPath: m_LocalPosition.x
