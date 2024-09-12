@@ -13,6 +13,7 @@
 
  ## Shooting 
 For shooting we need to create a BulletSystem and BulletComponent, in my bulletComponent I collision radius for checking if the bullet is hitting the enemy later on. To explain it really briefly, all I do is loop through all enemies then I check the distance between bullet and enemy, then I deal damage(-50 in this case), and then I destroy the enemy. we use " entityManager.GetAllEntities()" to get all enemy entities.
+!!!please note i didn't find a way to use collision to work with dots/entities, the way we handle collision is to check the bullet.position is close to enemy.position, it works but ofc it's not perfect!!!
 
 ## Optimization
 Unity's DOTS and ECS are designed to minimize the heap allocation by using struct, we use struct for all the Components and systems scripts, this reduces the memory fragmentation and avoids garbage collection issues.
