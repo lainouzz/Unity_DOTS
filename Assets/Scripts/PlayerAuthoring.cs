@@ -9,7 +9,6 @@ public class PlayerAuthoring : MonoBehaviour
    public float shootCoolDown = 1;
    public GameObject bulletPrefab;
 
-   public bool isDead;
    public class PlayerBake : Baker<PlayerAuthoring>
    {
       public override void Bake(PlayerAuthoring authoring)
