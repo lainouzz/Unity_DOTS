@@ -1,5 +1,7 @@
 # Unity_DOTS
 
+# NOTE: The current release is the stable version, can't get my current new build to work, a unity crash happens after the splash screen!!!
+
 ## Project explanation
  In this project we created a Unity 2D project using Unity DOTS(Data-Oriented Technology Stack), the goal was to create a simple space shooter game, where we needed some type of wave of enemies, player movement and shooting to kill the enemies.
 
